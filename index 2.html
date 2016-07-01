@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Alexander Hughes for Emissary</title>
+    <script src="https://fb.me/react-15.1.0.js"></script>
+    <script src="https://fb.me/react-dom-15.1.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+  </head>
+  <body>
+    <script type="text/jsx">
+      export default class Card extends React.Component {
+        static propTypes = {
+          number: React.PropTypes.number,
+          onCardFlipped: React.PropTypes.func,
+        }
+
+        state = {
+          flipped: false,
+        }
+
+        _handleClick = (e) => {
+          e.preventDefault();
+          this.setState({ flipped: !this.state.flipped });
+          this.props.onCardFlipped(e);
+        }
+
+        render() {
+          return (
+            <a className="card" onClick={this._handleClick}>
+              {this.state.flipped &&
+                <span>(back of card) nothing - im flipped over</span>
+              }
+              {this.state.flipped === false &&
+                <span>(front of card) {this.props.number}</span>
+              }
+            </a>
+          )
+        }
+      }
+
+      export default class CardTable extends React.Component {
+        static propTypes = {
+          numberOfCards: React.PropTypes.number,
+        }
+
+        _myFunction(e) {
+          console.log('hello from CardTable - a card was flipped!');
+        }
+
+        render() {
+          return (
+            {this.props.numberOfCards.map((i) =>
+              <Card key={i} number={i} onCardFlipped={this._myFunction} />
+            )}
+          )
+        }
+      }
+      
+      ReactDOM.render
+    </script>
+  </body>
+</html>
