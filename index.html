@@ -26,6 +26,10 @@
       return { flipped: false };
     },
     
+    onCardFlipped: function(e) {
+      console.log('test')
+    },
+    
     _handleClick: function(e) {
       e.preventDefault();
       this.setState({ flipped: !this.state.flipped });
@@ -33,10 +37,13 @@
     },
     
     render: function() {
+      console.log(this.state);
       return <div className="thumbnail">
-        <img src={this.props.imageUrl} />
+        <a onClick={this._handleClick}><img src={this.props.imageUrl} /></a>
         <div className="caption">
+        {this.state.flipped === true &&
           <h3>{this.props.number}</h3>
+        }
         </div>
       </div>
     }
