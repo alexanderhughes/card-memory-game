@@ -26,13 +26,11 @@
       return { flipped: false };
     },
     
-    onCardFlipped: function(e) {
-      console.log('test')
-    },
-    
     _handleClick: function(e) {
       e.preventDefault();
       this.setState({ flipped: !this.state.flipped });
+      console.log('test1');
+      console.log(this.props);
       this.props.onCardFlipped(e);
     },
     
@@ -50,6 +48,10 @@
   });
   
   var CardList = React.createClass({
+    onCardFlipped: function(e) {
+      console.log('test');
+    },
+    
     render: function(){
       console.log(this.props.cardData);
       var list = this.props.cardData.map(function(cardProps){
@@ -69,7 +71,8 @@
     var randomNum = Math.floor(Math.random()*13+1)
     var newCard = {
       number: randomNum,
-      imageUrl: "http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg"
+      imageUrl: "http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg",
+      onCardFlipped: this.onCardFlipped
     };
     cardData.push(newCard);
     numOfCards++;
