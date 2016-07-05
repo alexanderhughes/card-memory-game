@@ -76,16 +76,6 @@
   }
   options.cardData = cardData;
   
-  var optionsSample = {  
-    cardDataSample: [{
-      number: 1,
-      imageUrl: "http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg",
-    },{
-      number: 2,
-      imageUrl: "http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg"
-    }]
-  };
-  
   var cardListInstance = React.createElement(CardList, options)
   
   ReactDOM.render(cardListInstance, document.querySelector('.target'));
