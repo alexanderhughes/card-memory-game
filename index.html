@@ -5,6 +5,7 @@
     <script src="https://fb.me/react-15.1.0.js"></script>
     <script src="https://fb.me/react-dom-15.1.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
   </head>
 <body>
@@ -29,13 +30,12 @@
     _handleClick: function(e) {
       e.preventDefault();
       this.setState({ flipped: !this.state.flipped });
-      console.log('test1');
       console.log(this.props);
-      this.props.onCardFlipped(e);
+      this.props.onCardFlipped(this.props.number);
     },
     
     render: function() {
-      console.log(this.state);
+      console.log(this.props);
       return <div className="thumbnail">
         <a onClick={this._handleClick}><img src={this.props.imageUrl} /></a>
         <div className="caption">
@@ -48,14 +48,36 @@
   });
   
   var CardList = React.createClass({
-    onCardFlipped: function(e) {
-      console.log('test');
+    onCardFlipped: function(card) {
+      console.log('OnCardFlipped function');
+      console.log(card);
+      flippedCards = this.state.flippedCards;
+      flippedCards.push(card);
+      console.log('flipped cards array', flippedCards);
+      matchedCards = this.state.matchedCards;
+      if (flippedCards.length >= 2) {
+        if (flippedCards[0] === flippedCards[1]) {
+          matchedCards.push(flippedCards[0]);
+        };
+        flippedCards = [];
+      };
+      console.log('matched cards', matchedCards);
+      this.setState({
+        flippedCards: flippedCards,
+        matchedCards: matchedCards
+      });
+    },
+    
+    getInitialState: function() {
+      return { flippedCards: [], matchedCards: [] };
     },
     
     render: function(){
-      console.log(this.props.cardData);
-      var list = this.props.cardData.map(function(cardProps){
-        return <Card {...cardProps} />
+      console.log('render cardlist', this.state);
+      var list = [];
+      var cardList = this;
+      _.each(this.props.cardData, function(cardProps){
+        list.push(<Card {...cardProps} onCardFlipped={cardList.onCardFlipped} />);
       });
       
       return <div>
@@ -68,11 +90,10 @@
   var cardData = [];
   var numOfCards = 0
   while (numOfCards < 20) {
-    var randomNum = Math.floor(Math.random()*13+1)
+    var randomNum = Math.floor(Math.random()*13+1);
     var newCard = {
       number: randomNum,
       imageUrl: "http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg",
-      onCardFlipped: this.onCardFlipped
     };
     cardData.push(newCard);
     numOfCards++;
@@ -80,7 +101,7 @@
   options.cardData = cardData;
   
   var cardListInstance = React.createElement(CardList, options)
-  
+
   ReactDOM.render(cardListInstance, document.querySelector('.target'));
 </script>
 </html>
